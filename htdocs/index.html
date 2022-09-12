@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<!--
+	Tessellate by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Twitter analysis</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=BenchNine&display=swap" rel="stylesheet">
+        <!--<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">-->
+
+		<link rel="stylesheet" href="assets/css/main.css" />
+
+        <!-- Load c3.css -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
+
+        <!-- Load d3.js and c3.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.0.0/d3.min.js" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
+
+        <!-- Load d3.js wordcloud -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+
+        <style>
+            #top-retweets td, #top-retweets th,
+            #top-users    td, #top-users    th,
+            #top-mentions td, #top-mentions th,
+            #post-volumes td, #post-volumes th {
+                text-align: right;
+            }
+            #top-retweets td:first-child, #top-retweets th:first-child,
+            #top-users    td:first-child, #top-users    th:first-child,
+            #top-mentions td:first-child, #top-mentions th:first-child,
+            #post-volumes td:first-child, #post-volumes th:first-child {
+                text-align: left;
+            }
+            .white {
+                background: white;
+            }
+            .content .container .row {
+                margin-bottom: 3em;
+            }
+            .content .container .row:last-child {
+                margin-bottom: 0;
+            }
+
+        </style>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+        <section id="header" class="dark">
+            <header>
+                <h1>Twitter analysis</h1>
+            </header>
+        </section>
+
+        <section class="main">
+            <div class="content">
+                <div class="container">
+                    <h3 class="featured">Tweets vs Retweets</h3>
+                    <div class="row aln-center">
+                        <div class="chart col-12-narrow" id="chart1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tweets vs Retweets -->
+        <section class="main">
+            <div class="content white">
+                <div class="container">
+                    <!--
+                    <h3 class="featured">Tweet and Retweet rate over time</h3>
+                    <div class="chart" id="chart2"></div>
+                    -->
+                    <h3 class="featured">Total and Tweet vs Retweet rates over time</h3>
+                    <div class="chart" id="chart3"></div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="container">
+                    <h3 class="featured">Top tweeters and retweeters including bots</h3>
+                    <div class="row">
+                        <div class="col-6 col-12-narrow">
+                            <div class="chart" id="chart4"></div>
+                        </div>
+                        <div class="col-6 col-12-narrow">
+                            <div class="chart" id="chart5"></div>
+                        </div>
+                    </div>
+
+                    <h3 class="featured">Top tweeters and retweeters with bots filtered out</h3>
+                    <div class="row">
+                        <div class="col-6 col-12-narrow">
+                            <div class="chart" id="chart6"></div>
+                        </div>
+                        <div class="col-6 col-12-narrow">
+                            <div class="chart" id="chart7"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bots -->
+        <section class="main">
+            <div class="content dark style1">
+                <div class="container">
+                    <h3 class="featured">Bot analysis</h3>
+                    <p id="top_rt_bot_list"><strong>Top retweeting bots: </strong></p>
+                    <p id="top_tw_bot_list"><strong>Top tweeting bots: </strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Geo -->
+        <section class="main">
+            <div class="content">
+                <div class="container">
+                    <h3 class="featured">Geolocation Analysis</h3>
+                    <div class="row">
+                        <div class="col-6 col-12-narrow"><div class="chart" id="chart8"></div></div>
+                        <div class="col-6 col-12-narrow"><div class="chart" id="chart9"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tweet vs Retweet volumes -->
+        <section class="main">
+            <div class="content white">
+                <div class="container">
+                    <h3 class="featured">Tweet vs Retweet volumes</h3>
+                    <div class="chart" id="chart10"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sharing -->
+        <section class="main">
+            <div class="content dark style2">
+                <div class="container">
+                    <h3 class="featured">What were people sharing?</h3>
+                    <table class="default" id="top-retweets">
+                        <thead><tr><th>Text of top retweets</th><th>RT&nbsp;count</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wordcloud -->
+        <section class="main">
+            <div class="content white">
+                <div class="container">
+                    <h3 class="featured">What were people saying?</h3>
+                </div>
+                <div id="wordcloud-container"></div>
+            </div>
+        </section>
+
+        <!-- Top-10 hashtags -->
+        <section class="main">
+            <div class="content container">
+                <h3 class="featured">Top-10 hashtags</h3>
+                <div class="row">
+                    <div class="col-6 col-12-narrow">
+                        <div class="chart" id="chart11"></div>
+                    </div>
+                    <div class="col-6 col-12-narrow">
+                        <div class="chart" id="chart12"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top-10 users & mentions -->
+        <section class="main">
+            <div class="content dark style3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 col-12-narrow">
+                            <h3 class="featured">Top-10 users</h3>
+                            <table class="default" id="top-users">
+                                <thead><tr><th>Username</th><th>Followers</th><th>Friends</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col-6 col-12-narrow">
+                            <h3 class="featured">Top-10 mentions</h3>
+                            <table class="default" id="top-mentions">
+                                <thead><tr><th>Username</th><th>Mentions</th><th>Percent</tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+		<!-- Modules -->
+        <script src="assets/js/jquery.slim.min.js"></script>
+
+        <!-- Data generated by twitter analyzer and wordcloud -->
+        <script src="charts/charts_data.js"></script>
+        <script src="charts/wordcloud_data.js"></script>
+
+        <!-- Chart scripts -->
+        <script src="charts/charts.js"></script>
+        <script src="charts/wordcloud.js"></script>
+
+	</body>
+</html>
